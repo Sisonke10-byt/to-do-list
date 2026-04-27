@@ -30,6 +30,13 @@ public class Todo {
         this.dueDate = dueDate;
     }
 
+    public Todo(String title, String description, boolean completed, LocalDate dueDate) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+        this.dueDate = dueDate;
+    }
+
     // ===== Getters & Setters =====
 
     public Long getId() {
