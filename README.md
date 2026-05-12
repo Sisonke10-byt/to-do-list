@@ -96,6 +96,25 @@ java -jar target/to-do-list-0.0.1-SNAPSHOT.jar
 
 The application will start on `http://localhost:8080` by default.
 
+### Deploying to Kubernetes (microk8s)
+
+For detailed Kubernetes deployment instructions, see [K8S_DEPLOYMENT.md](K8S_DEPLOYMENT.md).
+
+Quick start:
+```bash
+# Build the app
+./mvnw clean package
+
+# Build Docker image
+docker build -t to-do-list:latest .
+
+# Deploy to microk8s
+kubectl apply -k k8s/
+
+# Access the app
+kubectl port-forward -n to-do-list svc/todo-app 8080:8080
+```
+
 ## API Endpoints
 
 ### Get all to-do items
