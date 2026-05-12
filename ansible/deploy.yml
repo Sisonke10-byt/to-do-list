@@ -6,7 +6,7 @@
 
   vars:
     deploy_dir: /opt/to-do-list
-    jar_src: target/to-do-list-0.0.1-SNAPSHOT.jar
+    jar_src: "{{ playbook_dir }}/../target/to-do-list-0.0.1-SNAPSHOT.jar"
     jar_dest: "{{ deploy_dir }}/to-do-list.jar"
     service_name: todo-list
     service_path: "/etc/systemd/system/{{ service_name }}.service"
