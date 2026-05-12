@@ -1,5 +1,8 @@
 # To-Do List Application
 
+[![CI main](https://github.com/Sisonke10-byt/to-do-list/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Sisonke10-byt/to-do-list/actions/workflows/build.yml?query=branch%3Amain)
+[![CI dev](https://github.com/Sisonke10-byt/to-do-list/actions/workflows/build.yml/badge.svg?branch=dev)](https://github.com/Sisonke10-byt/to-do-list/actions/workflows/build.yml?query=branch%3Adev)
+
 A Spring Boot REST API for managing your daily tasks and to-do items. This application provides a clean, simple interface to create, read, update, and delete to-do items with completion status tracking.
 
 ## Features

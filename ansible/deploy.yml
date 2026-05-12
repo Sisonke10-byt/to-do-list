@@ -1,0 +1,69 @@
+---
+- name: Deploy To-Do List app to a Linux VM
+  hosts: localhost
+  connection: local
+  become: yes
+
+  vars:
+    deploy_dir: /opt/to-do-list
+    jar_src: target/to-do-list-0.0.1-SNAPSHOT.jar
+    jar_dest: "{{ deploy_dir }}/to-do-list.jar"
+    service_name: todo-list
+    service_path: "/etc/systemd/system/{{ service_name }}.service"
+
+  tasks:
+    - name: Ensure deployment directory exists
+      ansible.builtin.file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Copy application JAR to the VM
+      ansible.builtin.copy:
+        src: "{{ jar_src }}"
+        dest: "{{ jar_dest }}"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Create systemd service file for the app
+      ansible.builtin.copy:
+        dest: "{{ service_path }}"
+        content: |
+          [Unit]
+          Description=To-Do List Spring Boot App
+          After=network.target
+          Wants=network-online.target
+
+          [Service]
+          User=root
+          ExecStart=/usr/bin/java -jar {{ jar_dest }}
+          Restart=on-failure
+          WorkingDirectory={{ deploy_dir }}
+          Environment=SPRING_PROFILES_ACTIVE=prod
+          Environment=SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/taskdb
+          Environment=SPRING_DATASOURCE_USERNAME=sisonke
+          Environment=SPRING_DATASOURCE_PASSWORD=Boyilani10*
+          Environment=SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+          [Install]
+          WantedBy=multi-user.target
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Reload systemd configuration
+      ansible.builtin.command:
+        cmd: systemctl daemon-reload
+      args:
+        warn: false
+      when: ansible_facts.os_family != 'Darwin'
+
+    - name: Ensure service is enabled and started
+      ansible.builtin.systemd:
+        name: "{{ service_name }}"
+        enabled: yes
+        state: started
+      when: ansible_facts.os_family != 'Darwin'
