@@ -38,17 +38,18 @@ A Spring Boot REST API for managing your daily tasks and to-do items. This appli
    ```
 
 2. **Set up PostgreSQL database**
-   - Create a new PostgreSQL database:
+   - If you want to run PostgreSQL locally, create a new database:
    ```sql
    CREATE DATABASE todo_db;
    ```
    - Update `application.properties` or `application.yml` with your database credentials
+   - If you use the provided `docker-compose.yml`, the local Postgres service is exposed on host port `5433` and the app container connects to `todo-postgres:5432`
 
 3. **Configure application properties**
    
    Edit `src/main/resources/application.properties`:
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/todo_db
+   spring.datasource.url=jdbc:postgresql://localhost:5433/todo_db
    spring.datasource.username=your_username
    spring.datasource.password=your_password
    spring.datasource.driver-class-name=org.postgresql.Driver
@@ -68,9 +69,21 @@ This will compile the source code, run tests, and create a JAR file in the `targ
 
 ## Running the Application
 
+### Using Docker Compose
+```bash
+docker compose up -d
+```
+
+This starts Postgres on host port `5433` and the app on `http://localhost:8080`.
+
+To stop the services:
+```bash
+docker compose down
+```
+
 ### Using Maven
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
 ### Using the JAR file
